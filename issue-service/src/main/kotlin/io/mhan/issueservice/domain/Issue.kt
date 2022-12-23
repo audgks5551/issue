@@ -15,7 +15,7 @@ class Issue (
     @Column
     var userId: Long,
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = [CascadeType.PERSIST], orphanRemoval = true)
     val comments: MutableList<Comment> = mutableListOf(),
 
     @Column
