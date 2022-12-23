@@ -2,6 +2,7 @@ package io.mhan.userservice.web
 
 import io.mhan.userservice.domain.service.UserService
 import io.mhan.userservice.model.AuthToken
+import io.mhan.userservice.model.MeResponse
 import io.mhan.userservice.model.SignInRequest
 import io.mhan.userservice.model.SignUpRequest
 import org.springframework.http.HttpStatus
@@ -26,5 +27,12 @@ class UserController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     suspend fun logout(@AuthToken token: String) {
         userService.logout(token)
+    }
+
+    @GetMapping("/me")
+    suspend fun get(
+        @AuthToken token: String
+    ) : MeResponse {
+        return MeResponse(userService.getByToken(token))
     }
 }
