@@ -1,6 +1,7 @@
 package io.mhan.issueservice.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import io.mhan.issueservice.domain.Comment
 import io.mhan.issueservice.domain.Issue
 import io.mhan.issueservice.domain.enums.IssuePriority
 import io.mhan.issueservice.domain.enums.IssueStatus
@@ -17,6 +18,7 @@ data class IssueRequest (
 
 data class IssueResponse (
     val id: Long,
+    val comments: List<CommentResponse> = emptyList(),
     val summary: String,
     val description: String,
     val userId: Long,
@@ -33,6 +35,7 @@ data class IssueResponse (
             with(issue) {
                 IssueResponse(
                     id = id!!,
+                    comments = comments.sortedByDescending(Comment::id).map(Comment::toResponse),
                     summary = summary,
                     description = description,
                     userId = userId,

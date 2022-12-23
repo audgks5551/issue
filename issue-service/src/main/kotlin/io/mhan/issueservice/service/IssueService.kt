@@ -34,6 +34,7 @@ class IssueService(
         issueRepository.findAllByStatusOrderByCreatedAtDesc(status)
             ?.map { IssueResponse(it) }
 
+
     @Transactional(readOnly = true)
     fun get(id: Long) : IssueResponse {
         val issue: Issue = issueRepository.findByIdOrNull(id) ?: throw NotFoundException("이슈가 존재하지 않습니다")
