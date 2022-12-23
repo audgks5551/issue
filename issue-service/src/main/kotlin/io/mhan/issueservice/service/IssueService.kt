@@ -2,10 +2,11 @@ package io.mhan.issueservice.service
 
 import io.mhan.issueservice.domain.Issue
 import io.mhan.issueservice.domain.IssueRepository
+import io.mhan.issueservice.domain.enums.IssueStatus
 import io.mhan.issueservice.model.IssueRequest
 import io.mhan.issueservice.model.IssueResponse
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class IssueService(
@@ -25,4 +26,9 @@ class IssueService(
 
         return IssueResponse(issueRepository.save(issue))
     }
+
+    @Transactional(readOnly = true)
+    fun getAll(status: IssueStatus) : List<IssueResponse>? =
+        issueRepository.findAllByStatusOrderByCreatedAtDesc(status)
+            ?.map { IssueResponse(it) }
 }
